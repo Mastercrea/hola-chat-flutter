@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_chat_app/helpers/show_alert.dart';
+import 'package:provider/provider.dart';
+import 'package:flutter_chat_app/services/auth_service.dart';
 import 'package:flutter_chat_app/widgets/btn_blue.dart';
 import 'package:flutter_chat_app/widgets/custom_input.dart';
 import 'package:flutter_chat_app/widgets/labels.dart';
@@ -47,6 +50,7 @@ class _FormState extends State<_Form> {
   final passwordCtrl = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    final authService = Provider.of<AuthService>(context);
     return Container(
       // for better L&F
       margin: EdgeInsets.only(top: 40),
@@ -62,10 +66,19 @@ class _FormState extends State<_Form> {
               textController: passwordCtrl,
               isPassword: true),
 
-          // TODO: Crear Boton
-          BtnBlue(onPressed: (){
-            print(emailCtrl.text);
-            print(passwordCtrl.text);
+          BtnBlue(onPressed: authService.authenticating ?  null : () async {
+            // Hide the keyboard
+            FocusScope.of(context).unfocus();
+
+           final loginOk = await authService.login(emailCtrl.text.trim(), passwordCtrl.text.trim());
+           if(loginOk){
+             // TODO: Connect Socket server
+             Navigator.pushReplacementNamed(context, 'users');
+
+           } else {
+             // TODO: Show Alert error
+             showAlert(context, 'Bad credentials', 'Check the data');
+           }
           }, btnName: 'Login',)
 
         ],

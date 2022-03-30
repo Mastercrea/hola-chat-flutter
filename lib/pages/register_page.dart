@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_chat_app/services/auth_service.dart';
 import 'package:flutter_chat_app/widgets/btn_blue.dart';
 import 'package:flutter_chat_app/widgets/custom_input.dart';
 import 'package:flutter_chat_app/widgets/labels.dart';
+import 'package:provider/provider.dart';
 
+import '../helpers/show_alert.dart';
 import '../widgets/logo.dart';
 
 class RegisterPage extends StatelessWidget {
@@ -48,6 +51,7 @@ class _FormState extends State<_Form> {
   final passwordCtrl = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    final authService = Provider.of<AuthService>(context);
     return Container(
       // for better L&F
       margin: EdgeInsets.only(top: 40),
@@ -67,10 +71,19 @@ class _FormState extends State<_Form> {
               textController: passwordCtrl,
               isPassword: true),
 
-          BtnBlue(onPressed: (){
+          BtnBlue(onPressed: authService.authenticating ?  null : () async {
             print(nameCtrl.text);
             print(emailCtrl.text);
             print(passwordCtrl.text);
+            final registerOk = await authService.register(nameCtrl.text.trim(), emailCtrl.text.trim(), passwordCtrl.text.trim());
+            if(registerOk == true){
+              // TODO: Connect Socket server
+              Navigator.pushReplacementNamed(context, 'users');
+
+            } else {
+              // TODO: Show Alert error
+              showAlert(context, 'Check the data', registerOk);
+            }
           }, btnName: 'Register',)
 
         ],
