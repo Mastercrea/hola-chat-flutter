@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_app/helpers/show_alert.dart';
+import 'package:flutter_chat_app/services/socket_service.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_chat_app/services/auth_service.dart';
 import 'package:flutter_chat_app/widgets/btn_blue.dart';
@@ -51,6 +52,7 @@ class _FormState extends State<_Form> {
   @override
   Widget build(BuildContext context) {
     final authService = Provider.of<AuthService>(context);
+    final socketService = Provider.of<SocketService>(context);
     return Container(
       // for better L&F
       margin: EdgeInsets.only(top: 40),
@@ -72,7 +74,8 @@ class _FormState extends State<_Form> {
 
            final loginOk = await authService.login(emailCtrl.text.trim(), passwordCtrl.text.trim());
            if(loginOk){
-             // TODO: Connect Socket server
+
+             socketService.connect();
              Navigator.pushReplacementNamed(context, 'users');
 
            } else {
