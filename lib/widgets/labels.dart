@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../theme.dart';
+
 class Labels extends StatelessWidget {
 
   final String routeNav;
@@ -22,7 +24,7 @@ class Labels extends StatelessWidget {
           child: Text(
             this.action,
             style: TextStyle(
-                color: Colors.blue[600],
+                color: tertiaryColor,
                 fontSize: 16,
                 fontWeight: FontWeight.bold),
           ),onTap: (){

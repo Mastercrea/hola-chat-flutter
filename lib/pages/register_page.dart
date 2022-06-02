@@ -7,6 +7,7 @@ import 'package:flutter_chat_app/widgets/labels.dart';
 import 'package:provider/provider.dart';
 
 import '../helpers/show_alert.dart';
+import '../theme.dart';
 import '../widgets/logo.dart';
 
 class RegisterPage extends StatelessWidget {
@@ -15,7 +16,7 @@ class RegisterPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Color(0xffF2F2F2),
+        backgroundColor: primaryColor,
         // SingleChildScrollView best ui
         body: SingleChildScrollView(
           physics: BouncingScrollPhysics(),
@@ -56,7 +57,7 @@ class _FormState extends State<_Form> {
     final socketService = Provider.of<SocketService>(context);
     return Container(
       // for better L&F
-      margin: EdgeInsets.only(top: 40),
+      margin: EdgeInsets.only(top: 10),
       padding: EdgeInsets.symmetric(horizontal: 50),
       child: Column(
         children: <Widget>[

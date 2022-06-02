@@ -14,11 +14,14 @@ class Logo extends StatelessWidget {
           width: 170,
           margin: EdgeInsets.only(top: 50),
           child: Column(children:  <Widget>[
-            Image(image: AssetImage('assets/tag-logo.png')),
+            Image(image: AssetImage('assets/logo5.png')),
             SizedBox(height: 20),
             Text(
               this.title,
-              style: TextStyle(fontSize: 30),
+              style: TextStyle(fontSize: 30,
+                  fontFamily: 'blogger',
+                  fontWeight: FontWeight. bold,
+                  color: Colors.white),
             )
           ]),
         ),

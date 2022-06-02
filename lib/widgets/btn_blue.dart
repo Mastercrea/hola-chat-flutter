@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../theme.dart';
+
 class BtnBlue extends StatelessWidget {
   final Function()? onPressed;
   final String btnName;
@@ -8,7 +10,8 @@ class BtnBlue extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(onPressed: this.onPressed, style: ElevatedButton.styleFrom(elevation: 2, primary: Colors.blue, shape: StadiumBorder()),
+    return ElevatedButton(onPressed: this.onPressed,
+      style: ElevatedButton.styleFrom(elevation: 2, primary: tertiaryColor, shape: StadiumBorder(), shadowColor: secondaryColor),
       child: Container(
           width: double.infinity,
           height: 55,
