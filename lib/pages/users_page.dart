@@ -30,7 +30,7 @@ class _UsersPageState extends State<UsersPage> {
   Widget build(BuildContext context) {
     final authService = Provider.of<AuthService>(context);
     final socketService = Provider.of<SocketService>(context);
-
+    socketService.socket.on('new-user-status', (_) => _loadUsers());
     final user = authService.user;
 
     return Scaffold(
