@@ -11,3 +11,5 @@ const Color secondaryColor = Color(0xffE057F2);
 //tertiary
 const Color tertiaryColor = Color(0xff4393D9);
 // const Color tertiaryColorLight = Color(0xff7e57ff);
+
+const Color textSecondaryColor = Color(0xffffffff);

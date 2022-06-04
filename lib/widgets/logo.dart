@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../theme.dart';
+
 class Logo extends StatelessWidget {
 
   final String title;
@@ -21,7 +23,7 @@ class Logo extends StatelessWidget {
               style: TextStyle(fontSize: 30,
                   fontFamily: 'blogger',
                   fontWeight: FontWeight. bold,
-                  color: Colors.white),
+                  color: textSecondaryColor),
             )
           ]),
         ),

@@ -9,6 +9,8 @@ import 'package:flutter_chat_app/services/socket_service.dart';
 import 'package:flutter_chat_app/widgets/chat_message.dart';
 import 'package:provider/provider.dart';
 
+import '../theme.dart';
+
 class ChatPage extends StatefulWidget {
   @override
   State<ChatPage> createState() => _ChatPageState();
@@ -70,7 +72,7 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: primaryColor,
         title: Column(
           children: <Widget>[
             CircleAvatar(
@@ -100,7 +102,7 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
             )),
             Divider(height: 1),
             Container(
-              color: Colors.white,
+              color: textSecondaryColor,
             ),
             _inputChat()
           ],

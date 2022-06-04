@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../services/users_service.dart';
+import '../theme.dart';
 
 class UsersPage extends StatefulWidget {
   @override
@@ -34,9 +35,18 @@ class _UsersPageState extends State<UsersPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(user.name, style: TextStyle(color: Colors.black87)),
+        title: Text(user.name, style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 22)),
+        bottom: PreferredSize(
+          child: Text('Connected', style: TextStyle(fontSize: 16,)),
+          preferredSize: Size(4,4),
+        ),
+
+      //   bottom: PreferredSize(
+      //       child: Text("Title 2"),
+      //       preferredSize: null),
+      // )
         elevation: 1,
-        backgroundColor: Colors.white,
+        backgroundColor: primaryColor,
         leading: IconButton(
           icon: Icon(Icons.exit_to_app, color: Colors.black87),
           onPressed: () {
@@ -84,8 +94,8 @@ class _UsersPageState extends State<UsersPage> {
       title: Text(user.name),
       subtitle: Text(user.email),
       leading: CircleAvatar(
-        child: Text(user.name.substring(0, 2)),
-        backgroundColor: Colors.blue[150],
+        child: Text(user.name.substring(0, 2), style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white ),),
+        backgroundColor: tertiaryColor,
       ),
       trailing: Container(
         width: 10,

@@ -16,7 +16,7 @@ class BtnBlue extends StatelessWidget {
           width: double.infinity,
           height: 55,
           child: Center(
-            child: Text(this.btnName, style: TextStyle(color: Colors.white, fontSize: 17))
+            child: Text(this.btnName, style: TextStyle(color: textSecondaryColor, fontSize: 17))
           )
       ),
     );
