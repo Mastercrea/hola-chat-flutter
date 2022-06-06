@@ -46,14 +46,19 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
         text: m.message,
         uid: m.from,
         animationController: new AnimationController(
-            vsync: this, duration: Duration(milliseconds: 0))..forward()));
+            vsync: this, duration: Duration(milliseconds: 0))
+          ..forward()));
     setState(() {
       _messages.insertAll(0, history);
     });
   }
 
   void _listenMessage(dynamic payload) {
+    final userFor = chatService.userFor;
     print('Have a message: $payload');
+    if (userFor.uid != payload['from']) {
+      return;
+    }
     ChatMessage message = new ChatMessage(
         text: payload['message'],
         uid: payload['from'],
@@ -72,6 +77,11 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
 
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            icon: const Icon(Icons.arrow_back, color: textSecondaryColor)),
         backgroundColor: primaryColor,
         title: Column(
           children: <Widget>[
@@ -179,7 +189,6 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
     setState(() {
       _writing = false;
     });
-
 
     this.socketService.emit('personal-message', {
       'from': this.authService.user.uid,

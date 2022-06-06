@@ -5,6 +5,7 @@ import 'package:flutter_chat_app/services/socket_service.dart';
 import 'package:flutter_chat_app/services/chat_service.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import '../helpers/show_notification.dart';
 
 import '../services/users_service.dart';
 import '../theme.dart';
@@ -15,36 +16,41 @@ class UsersPage extends StatefulWidget {
 }
 
 class _UsersPageState extends State<UsersPage> {
+  late SocketService socketService;
+  late AuthService authService;
+
   final usersService = new UsersService();
   List<User> users = [];
+  var idLastChatOpen = '';
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
 
   @override
   void initState() {
     _loadUsers();
+    authService = Provider.of<AuthService>(context, listen: false);
+    socketService = Provider.of<SocketService>(context, listen: false);
+    socketService.socket.on('personal-notification', _newMessage);
+    socketService.socket.on('new-user-status', (_) => _loadUsers());
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    final authService = Provider.of<AuthService>(context);
-    final socketService = Provider.of<SocketService>(context);
-    socketService.socket.on('new-user-status', (_) => _loadUsers());
     final user = authService.user;
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(user.name, style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 22)),
-        bottom: PreferredSize(
-          child: Text('Connected', style: TextStyle(fontSize: 16,)),
-          preferredSize: Size(4,4),
-        ),
+        title: Text(user.name,
+            style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 22)),
 
-      //   bottom: PreferredSize(
-      //       child: Text("Title 2"),
-      //       preferredSize: null),
-      // )
+        //   bottom: PreferredSize(
+        //       child: Text("Title 2"),
+        //       preferredSize: null),
+        // )
         elevation: 1,
         backgroundColor: primaryColor,
         leading: IconButton(
@@ -80,6 +86,20 @@ class _UsersPageState extends State<UsersPage> {
     );
   }
 
+  _newMessage(dynamic payload) {
+    print(payload);
+    if (idLastChatOpen != payload['from']) {
+      for (var e in users) {
+        {
+            if (e.uid == payload['from']) {
+                showNotification(e.name, payload['message']);
+                break;
+              }
+          };
+      }
+    }
+  }
+
   _listViewUsers() {
     return ListView.separated(
         physics: BouncingScrollPhysics(),
@@ -89,12 +109,14 @@ class _UsersPageState extends State<UsersPage> {
   }
 
   ListTile _userListTile(User user) {
-
     return ListTile(
       title: Text(user.name),
       subtitle: Text(user.email),
       leading: CircleAvatar(
-        child: Text(user.name.substring(0, 2), style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white ),),
+        child: Text(
+          user.name.substring(0, 2),
+          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+        ),
         backgroundColor: tertiaryColor,
       ),
       trailing: Container(
@@ -106,8 +128,11 @@ class _UsersPageState extends State<UsersPage> {
       ),
       onTap: () {
         final chatService = Provider.of<ChatService>(context, listen: false);
+        idLastChatOpen = user.uid;
         chatService.userFor = user;
-        Navigator.pushNamed(context, 'chat');
+        Navigator.pushNamed(context, 'chat').then((_) => {
+              idLastChatOpen = '',
+            });
       },
     );
   }
