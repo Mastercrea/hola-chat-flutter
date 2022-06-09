@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../theme.dart';
+import '../app_theme.dart';
 
 class CustomInput extends StatelessWidget {
   // const CustomInput({Key? key}) : super(key: key);
@@ -26,7 +26,7 @@ class CustomInput extends StatelessWidget {
       padding: EdgeInsets.only(top: 5, left: 5, bottom: 5, right: 20),
       margin: EdgeInsets.only(bottom: 15),
       decoration: BoxDecoration(
-          color: textSecondaryColor,
+          color: AppTheme.textSecondaryColor,
           borderRadius: BorderRadius.circular(30),
           boxShadow: <BoxShadow>[
             BoxShadow(

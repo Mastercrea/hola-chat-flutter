@@ -7,7 +7,7 @@ import 'package:flutter_chat_app/widgets/btn_blue.dart';
 import 'package:flutter_chat_app/widgets/custom_input.dart';
 import 'package:flutter_chat_app/widgets/labels.dart';
 
-import '../theme.dart';
+import '../app_theme.dart';
 import '../widgets/logo.dart';
 
 class LoginPage extends StatelessWidget {
@@ -16,7 +16,7 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: primaryColor,
+        backgroundColor: AppTheme.primaryColor,
         // SingleChildScrollView best ui
         body: SingleChildScrollView(
           physics: BouncingScrollPhysics(),
@@ -77,7 +77,7 @@ class _FormState extends State<_Form> {
            if(loginOk){
 
              socketService.connect();
-             Navigator.pushReplacementNamed(context, 'users');
+             Navigator.pushReplacementNamed(context, 'drawer');
 
            } else {
              // TODO: Show Alert error

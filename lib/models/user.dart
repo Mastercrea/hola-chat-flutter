@@ -15,18 +15,24 @@ class User {
     required this.name,
     required this.email,
     required this.uid,
+    required this.google,
+    required this.img,
   });
 
   bool online;
   String name;
   String email;
   String uid;
+  bool google;
+  String? img ;
 
   factory User.fromJson(Map<String, dynamic> json) => User(
     online: json["online"],
     name: json["name"],
     email: json["email"],
     uid: json["uid"],
+    google: json["google"],
+    img: json["img"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -34,5 +40,7 @@ class User {
     "name": name,
     "email": email,
     "uid": uid,
+    "google": google,
+    "img": img,
   };
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../theme.dart';
+import '../app_theme.dart';
 
 class Logo extends StatelessWidget {
 
@@ -21,9 +21,9 @@ class Logo extends StatelessWidget {
             Text(
               this.title,
               style: TextStyle(fontSize: 30,
-                  fontFamily: 'blogger',
+                  fontFamily: AppTheme.fontLogin,
                   fontWeight: FontWeight. bold,
-                  color: textSecondaryColor),
+                  color: AppTheme.textSecondaryColor),
             )
           ]),
         ),

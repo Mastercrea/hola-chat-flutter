@@ -5,10 +5,10 @@ import 'package:flutter_chat_app/services/socket_service.dart';
 import 'package:flutter_chat_app/services/chat_service.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import '../app_theme.dart';
 import '../helpers/show_notification.dart';
 
 import '../services/users_service.dart';
-import '../theme.dart';
 
 class UsersPage extends StatefulWidget {
   @override
@@ -46,21 +46,22 @@ class _UsersPageState extends State<UsersPage> {
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
                 fontSize: 22)),
+        centerTitle: true,
 
         //   bottom: PreferredSize(
         //       child: Text("Title 2"),
         //       preferredSize: null),
         // )
         elevation: 1,
-        backgroundColor: primaryColor,
-        leading: IconButton(
-          icon: Icon(Icons.exit_to_app, color: Colors.black87),
-          onPressed: () {
-            socketService.disconnect();
-            Navigator.pushReplacementNamed(context, 'login');
-            AuthService.deleteToken();
-          },
-        ),
+        backgroundColor: AppTheme.primaryColor,
+        // leading: IconButton(
+        //   icon: Icon(Icons.exit_to_app, color: Colors.black87),
+        //   onPressed: () {
+        //     socketService.disconnect();
+        //     Navigator.pushReplacementNamed(context, 'login');
+        //     AuthService.deleteToken();
+        //   },
+        // ),
         actions: <Widget>[
           Container(
               margin: EdgeInsets.only(
@@ -91,11 +92,12 @@ class _UsersPageState extends State<UsersPage> {
     if (idLastChatOpen != payload['from']) {
       for (var e in users) {
         {
-            if (e.uid == payload['from']) {
-                showNotification(e.name, payload['message']);
-                break;
-              }
-          };
+          if (e.uid == payload['from']) {
+            showNotification(e.name, payload['message']);
+            break;
+          }
+        }
+        ;
       }
     }
   }
@@ -117,7 +119,7 @@ class _UsersPageState extends State<UsersPage> {
           user.name.substring(0, 2),
           style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
         ),
-        backgroundColor: tertiaryColor,
+        backgroundColor: AppTheme.tertiaryColor,
       ),
       trailing: Container(
         width: 10,

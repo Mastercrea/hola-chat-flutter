@@ -6,8 +6,8 @@ import 'package:flutter_chat_app/widgets/custom_input.dart';
 import 'package:flutter_chat_app/widgets/labels.dart';
 import 'package:provider/provider.dart';
 
+import '../app_theme.dart';
 import '../helpers/show_alert.dart';
-import '../theme.dart';
 import '../widgets/logo.dart';
 
 class RegisterPage extends StatelessWidget {
@@ -16,7 +16,7 @@ class RegisterPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: primaryColor,
+        backgroundColor: AppTheme.primaryColor,
         // SingleChildScrollView best ui
         body: SingleChildScrollView(
           physics: BouncingScrollPhysics(),
@@ -81,7 +81,7 @@ class _FormState extends State<_Form> {
             final registerOk = await authService.register(nameCtrl.text.trim(), emailCtrl.text.trim(), passwordCtrl.text.trim());
             if(registerOk == true){
               socketService.connect();
-              Navigator.pushReplacementNamed(context, 'users');
+              Navigator.pushReplacementNamed(context, 'drawer');
 
             } else {
               showAlert(context, 'Check the data', registerOk);

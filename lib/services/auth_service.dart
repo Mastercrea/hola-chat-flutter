@@ -8,7 +8,7 @@ import 'package:flutter_chat_app/models/user.dart';
 
 class AuthService with ChangeNotifier {
 // create the user object empty
-  User user = User(name: '', email: '', uid: '', online: false);
+  User user = User(name: '', email: '', uid: '', online: false, google: false, img: 'no-image');
 
   // Create storage
   final _storage = new FlutterSecureStorage();
@@ -91,6 +91,22 @@ class AuthService with ChangeNotifier {
       this._logout();
       return false;
     }
+  }
+  Future savePicture(String imagePath) async {
+    final request = await http.MultipartRequest('PUT',
+        Uri.parse('${Environment.apiUrl}/uploads/${user.uid}'));
+
+    final picture = await http.MultipartFile.fromPath(
+        'image',
+        imagePath,
+        filename: 'testPicture.png' );
+    request.files.add(picture);
+    var response = await request.send();
+    var responsed = await http.Response.fromStream(response);
+    // TODO: validate responsed.statusCode 200
+    final responseData = json.decode(responsed.body);
+    user.img = responseData['img'];
+    return responseData;
   }
 
   Future _saveToken(String token) async {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../theme.dart';
+import '../app_theme.dart';
 
 class Labels extends StatelessWidget {
 
@@ -24,7 +24,7 @@ class Labels extends StatelessWidget {
           child: Text(
             this.action,
             style: TextStyle(
-                color: tertiaryColor,
+                color: AppTheme.tertiaryColor,
                 fontSize: 16,
                 fontWeight: FontWeight.bold),
           ),onTap: (){

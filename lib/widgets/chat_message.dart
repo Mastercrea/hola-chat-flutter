@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_chat_app/services/auth_service.dart';
 import 'package:provider/provider.dart';
 
-import '../theme.dart';
+import '../app_theme.dart';
 
 class ChatMessage extends StatelessWidget {
   final String text;
@@ -32,7 +32,7 @@ class ChatMessage extends StatelessWidget {
     child: Container(
       padding: EdgeInsets.all(8.0),
       margin: EdgeInsets.only(bottom: 10, left: 50, right: 5),
-      child: Text(this.text, style: TextStyle(color: textSecondaryColor)),
+      child: Text(this.text, style: TextStyle(color: AppTheme.textSecondaryColor)),
       decoration: BoxDecoration(
         color: Color(0xff4D9EF6),
         borderRadius: BorderRadius.circular(20)

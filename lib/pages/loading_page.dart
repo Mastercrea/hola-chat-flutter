@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_chat_app/navigation_home_screen.dart';
 import 'package:flutter_chat_app/pages/login_page.dart';
 import 'package:flutter_chat_app/pages/users_page.dart';
 import 'package:flutter_chat_app/services/auth_service.dart';
@@ -46,7 +47,7 @@ class _LoadingPageState extends State<LoadingPage> {
       // Routes with animations
       Navigator.pushReplacement(context,
           PageRouteBuilder(
-              pageBuilder: ( _, __ , ___) => UsersPage(),
+              pageBuilder: ( _, __ , ___) => NavigationHomeScreen(),
             transitionDuration: Duration(milliseconds: 1000)
           )
       );
