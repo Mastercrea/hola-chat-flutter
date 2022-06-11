@@ -7,6 +7,7 @@ import 'package:flutter_chat_app/services/auth_service.dart';
 import 'package:flutter_chat_app/services/chat_service.dart';
 import 'package:flutter_chat_app/services/socket_service.dart';
 import 'package:flutter_chat_app/widgets/chat_message.dart';
+import 'package:flutter_chat_app/widgets/user_circle_avatar.dart';
 import 'package:provider/provider.dart';
 
 import '../app_theme.dart';
@@ -85,12 +86,7 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
         backgroundColor: AppTheme.primaryColor,
         title: Column(
           children: <Widget>[
-            CircleAvatar(
-              child: Text(userFor.name.substring(0, 2),
-                  style: TextStyle(fontSize: 12)),
-              backgroundColor: Colors.blue[100],
-              maxRadius: 16,
-            ),
+            UserCircleAvatar(user: userFor),
             SizedBox(height: 3),
             Text(userFor.name,
                 style: TextStyle(color: Colors.black87, fontSize: 12))

@@ -9,6 +9,7 @@ import '../app_theme.dart';
 import '../helpers/show_notification.dart';
 
 import '../services/users_service.dart';
+import '../widgets/user_circle_avatar.dart';
 
 class UsersPage extends StatefulWidget {
   @override
@@ -16,8 +17,8 @@ class UsersPage extends StatefulWidget {
 }
 
 class _UsersPageState extends State<UsersPage> {
-  late SocketService socketService;
-  late AuthService authService;
+  AuthService authService = AuthService();
+  SocketService socketService = SocketService();
 
   final usersService = new UsersService();
   List<User> users = [];
@@ -114,13 +115,7 @@ class _UsersPageState extends State<UsersPage> {
     return ListTile(
       title: Text(user.name),
       subtitle: Text(user.email),
-      leading: CircleAvatar(
-        child: Text(
-          user.name.substring(0, 2),
-          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
-        ),
-        backgroundColor: AppTheme.tertiaryColor,
-      ),
+      leading: UserCircleAvatar(user: user),
       trailing: Container(
         width: 10,
         height: 10,
@@ -139,6 +134,24 @@ class _UsersPageState extends State<UsersPage> {
     );
   }
 
+  // Widget userCircleAvatar (user) {
+  //   if (user.img != null && Uri.parse(user.img!).isAbsolute) {
+  //     final String lowResImg = user.img.substring(0, 50) + 'c_scale,h_100,w_100/' + user.img.substring(50);
+  //     return CircleAvatar(
+  //       backgroundImage: NetworkImage(lowResImg),
+  //       backgroundColor: AppTheme.tertiaryColor,
+  //     );
+  //   } else {
+  //     return CircleAvatar(
+  //     child: Text(
+  //       user.name.substring(0, 2),
+  //       style: const TextStyle(
+  //           fontWeight: FontWeight.bold, color: Colors.white),
+  //     ),
+  //     backgroundColor: AppTheme.tertiaryColor,
+  //   );
+  //   }
+  // }
   _loadUsers() async {
     this.users = await usersService.getUsers();
     setState(() {});

@@ -211,7 +211,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
   }
 
   Widget showImage(user) {
-    if (user.img != null) {
+    if (user.img != null && Uri.parse(user.img!).isAbsolute) {
       return Image.network(user.img!);
     }
     // else if (_croppedFile != null) {
