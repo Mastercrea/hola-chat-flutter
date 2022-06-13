@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "19532019098",
+    "project_id": "hola-chat-353120",
+    "storage_bucket": "hola-chat-353120.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:19532019098:android:3fa4be9e39a776ee92b623",
+        "android_client_info": {
+          "package_name": "com.crea.hola_chat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "19532019098-8rng7l3h89in2btfii3lcsjt0208pod7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.crea.hola_chat",
+            "certificate_hash": "5851634e6a913d10e302fd1558041fd55a73c625"
+          }
+        },
+        {
+          "client_id": "19532019098-mg8cr2u8qfss7n6vpkq15aofl38m9ims.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA0Huwbxw8Nq7vZKUAcQjqlmyKQKRCHLBI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "19532019098-mg8cr2u8qfss7n6vpkq15aofl38m9ims.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

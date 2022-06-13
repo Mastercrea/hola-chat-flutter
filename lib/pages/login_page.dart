@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_app/helpers/show_alert.dart';
 import 'package:flutter_chat_app/services/socket_service.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_chat_app/services/auth_service.dart';
 import 'package:flutter_chat_app/widgets/btn_blue.dart';
@@ -28,7 +29,10 @@ class LoginPage extends StatelessWidget {
               children: <Widget>[
                 Logo(title: 'Messenger'),
                 _Form(),
-                Labels(routeNav: 'register',question: 'Don`t have an account?', action: 'Create one now!'),
+                Labels(
+                    routeNav: 'register',
+                    question: 'Don`t have an account?',
+                    action: 'Create one now!'),
                 Text(
                   'Terms Of Use Agreement',
                   style: TextStyle(fontWeight: FontWeight.w200),
@@ -50,6 +54,7 @@ class _Form extends StatefulWidget {
 class _FormState extends State<_Form> {
   final emailCtrl = TextEditingController();
   final passwordCtrl = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     final authService = Provider.of<AuthService>(context);
@@ -60,35 +65,69 @@ class _FormState extends State<_Form> {
       padding: EdgeInsets.symmetric(horizontal: 50),
       child: Column(
         children: <Widget>[
-          CustomInput(icon: Icons.mail_outline,
+          CustomInput(
+              icon: Icons.mail_outline,
               placeholder: 'Email',
               keyboardType: TextInputType.emailAddress,
               textController: emailCtrl),
-          CustomInput(icon: Icons.lock_outline,
+          CustomInput(
+              icon: Icons.lock_outline,
               placeholder: 'Password',
               textController: passwordCtrl,
               isPassword: true),
+          BtnBlue(
+            onPressed: authService.authenticating
+                ? null
+                : () async {
+                    // Hide the keyboard
+                    FocusScope.of(context).unfocus();
 
-          BtnBlue(onPressed: authService.authenticating ?  null : () async {
-            // Hide the keyboard
-            FocusScope.of(context).unfocus();
-
-           final loginOk = await authService.login(emailCtrl.text.trim(), passwordCtrl.text.trim());
-           if(loginOk){
-
-             socketService.connect();
-             Navigator.pushReplacementNamed(context, 'drawer');
-
-           } else {
-             // TODO: Show Alert error
-             showAlert(context, 'Bad credentials', 'Check the data');
-           }
-          }, btnName: 'Login',)
-
+                    final loginOk = await authService.login(
+                        emailCtrl.text.trim(), passwordCtrl.text.trim());
+                    if (loginOk) {
+                      socketService.connect();
+                      Navigator.pushReplacementNamed(context, 'drawer');
+                    } else {
+                      // TODO: Show Alert error
+                      showAlert(context, 'Bad credentials', 'Check the data');
+                    }
+                  },
+            btnName: 'Login',
+          ),
+          SizedBox(height: 10),
+          MaterialButton(
+              splashColor: Colors.transparent,
+              minWidth: double.infinity,
+              height: 40,
+              color: Colors.red,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8)),
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    Icon(
+                      FontAwesomeIcons.google,
+                      color: Colors.white,
+                    ),
+                    Text('   Sign in with Google',
+                        style: TextStyle(color: Colors.white, fontSize: 17)),
+                  ]),
+              onPressed: () async => {
+                    await authService.signInWithGoogle().then((value) => {
+                          if (value)
+                            {
+                              socketService.connect(),
+                              Navigator.pushReplacementNamed(context, 'drawer')
+                            }
+                          else
+                            {
+                              showAlert(
+                                  context, 'Bad credentials', 'Check the data')
+                            }
+                        })
+                  })
         ],
       ),
     );
   }
 }
-
-

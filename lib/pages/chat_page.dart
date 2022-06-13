@@ -86,10 +86,11 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
         backgroundColor: AppTheme.primaryColor,
         title: Column(
           children: <Widget>[
+            const SizedBox(height: 2),
             UserCircleAvatar(user: userFor),
-            SizedBox(height: 3),
+            const SizedBox(height: 2),
             Text(userFor.name,
-                style: TextStyle(color: Colors.black87, fontSize: 12))
+                style: const TextStyle(color: Colors.black87, fontSize: 12))
           ],
         ),
         centerTitle: true,

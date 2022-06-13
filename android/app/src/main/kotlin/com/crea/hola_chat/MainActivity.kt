@@ -1,4 +1,4 @@
-package com.crea.flutter_chat_app
+package com.crea.hola_chat
 
 import io.flutter.embedding.android.FlutterActivity
 

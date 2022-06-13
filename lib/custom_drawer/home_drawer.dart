@@ -408,6 +408,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
   void logout() {
     socketService.disconnect();
     Navigator.pushReplacementNamed(context, 'login');
+    AuthService.signOutWithGoogle();
     AuthService.deleteToken();
   }
 }

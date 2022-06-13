@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter/material.dart';
@@ -117,5 +118,54 @@ class AuthService with ChangeNotifier {
   Future _logout() async {
     // Delete value
     await _storage.delete(key: 'token');
+  }
+
+  static final GoogleSignIn _googleSignIn = GoogleSignIn(
+    scopes: [
+      'email',
+    ],
+  );
+
+  Future signInWithGoogle() async {
+    try {
+      final account = await _googleSignIn.signIn();
+      final googleKey = await account!.authentication;
+
+      // print(account);
+      print('====== ID TOKEN ======');
+      print(googleKey.idToken);
+
+      final signInWithGoogleEndpoint = Uri(scheme: 'https', host: 'hola-chat-backend.herokuapp.com', path: '/api/login/google');
+
+      final session =  await http.post(signInWithGoogleEndpoint, body: {'token': googleKey.idToken});
+
+      print('===== backend =====');
+      print(json.decode(session.body));
+
+
+      if (session.statusCode == 200) {
+        final LoginResponse loginResponse = loginResponseFromJson(session.body);
+        user = loginResponse.user;
+        await this._saveToken(loginResponse.token);
+
+        return true;
+      } else {
+        return false;
+      }
+
+    } catch (e) {
+      print('Error en GoogleSignIn');
+      print(e);
+      return false;
+    }
+  }
+
+  static Future signOutWithGoogle() async {
+    try {
+      await _googleSignIn.signOut();
+    } catch (e) {
+      print('Error en GoogleSignOut');
+      print(e);
+    }
   }
 }
