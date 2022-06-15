@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 
 import '../services/auth_service.dart';
 import '../services/socket_service.dart';
+import '../widgets/loading_animation.dart';
 
 class HomeDrawer extends StatefulWidget {
   const HomeDrawer(
@@ -128,13 +129,20 @@ class _HomeDrawerState extends State<HomeDrawer> {
                             child: ClipRRect(
                               borderRadius:
                                   const BorderRadius.all(Radius.circular(60.0)),
-                              child: GestureDetector(
-                                onTap: () {
-                                  _showModalBottomSheet(context);
-                                },
-                                child: CircleAvatar(
-                                  child: showImage(user),
-                                  backgroundColor: AppTheme.tertiaryColor,
+                              child: CircleAvatar(
+                                backgroundColor: AppTheme.tertiaryColor,
+                                child: Stack(
+                                  children: [
+                                    GestureDetector(
+                                    onTap: () {
+                                      _showModalBottomSheet(context);
+                                    },
+                                    child: showImage(user),
+                                  ),
+                                    authService.isLoading
+                                        ? const LoadingAnimation()
+                                        : Container(),
+                                  ]
                                 ),
                               ),
                             ),
@@ -212,6 +220,11 @@ class _HomeDrawerState extends State<HomeDrawer> {
 
   Widget showImage(user) {
     if (user.img != null && Uri.parse(user.img!).isAbsolute) {
+      if (user.img!.contains('google')) {
+        final String userGoogleImg =
+            user.img!.substring(0, (user.img!.indexOf('=') + 1)) + 's200-c';
+        return Image.network(userGoogleImg);
+      }
       return Image.network(user.img!);
     }
     // else if (_croppedFile != null) {

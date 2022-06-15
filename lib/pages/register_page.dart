@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 
 import '../app_theme.dart';
 import '../helpers/show_alert.dart';
+import '../widgets/loading_animation.dart';
 import '../widgets/logo.dart';
 
 class RegisterPage extends StatelessWidget {
@@ -15,6 +16,7 @@ class RegisterPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final authService = Provider.of<AuthService>(context);
     return Scaffold(
         backgroundColor: AppTheme.primaryColor,
         // SingleChildScrollView best ui
@@ -23,17 +25,24 @@ class RegisterPage extends StatelessWidget {
           child: Container(
             // Special height for not break the app
             height: MediaQuery.of(context).size.height * 0.95,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Logo(title: 'Register'),
-                _Form(),
-                 Labels(routeNav: 'login',question: 'Has an account?', action: 'Log in'),
-                Text(
-                  'Terms Of Use Agreement',
-                  style: TextStyle(fontWeight: FontWeight.w200),
-                )
-              ],
+            child: Stack(
+              children: [
+                Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Logo(title: 'Register'),
+                  _Form(),
+                   Labels(routeNav: 'login',question: 'Has an account?', action: 'Log in'),
+                  Text(
+                    'Terms Of Use Agreement',
+                    style: TextStyle(fontWeight: FontWeight.w200),
+                  )
+                ],
+              ),
+                authService.isLoading
+                    ? const LoadingAnimation()
+                    : Container(),
+              ]
             ),
           ),
         ));
@@ -74,7 +83,7 @@ class _FormState extends State<_Form> {
               textController: passwordCtrl,
               isPassword: true),
 
-          BtnBlue(onPressed: authService.authenticating ?  null : () async {
+          BtnBlue(onPressed: authService.isLoading ?  null : () async {
             print(nameCtrl.text);
             print(emailCtrl.text);
             print(passwordCtrl.text);

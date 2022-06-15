@@ -14,12 +14,12 @@ class AuthService with ChangeNotifier {
   // Create storage
   final _storage = new FlutterSecureStorage();
 
-  bool _authenticating = false;
+  bool _isLoading = false;
 
-  bool get authenticating => this._authenticating;
+  bool get isLoading => _isLoading;
 
-  set authenticating(bool value) {
-    this._authenticating = value;
+  set isLoading(bool value) {
+    _isLoading = value;
     notifyListeners();
   }
 
@@ -37,13 +37,13 @@ class AuthService with ChangeNotifier {
   }
 
   Future<bool> login(String email, String password) async {
-    this.authenticating = true;
+    this.isLoading = true;
 
     final data = {'email': email, 'password': password};
 
     final resp = await http.post(Uri.parse('${Environment.apiUrl}/login'),
         headers: {'Content-Type': 'application/json'}, body: jsonEncode(data));
-    this.authenticating = false;
+    this.isLoading = false;
     if (resp.statusCode == 200) {
       final loginResponse = loginResponseFromJson(resp.body);
       this.user = loginResponse.user;
@@ -57,11 +57,11 @@ class AuthService with ChangeNotifier {
   }
 
   Future register(String name, String email, String password) async {
-    this.authenticating = true;
+    this.isLoading = true;
     final data = {'name': name, 'email': email, 'password': password};
     final resp = await http.post(Uri.parse('${Environment.apiUrl}/login/new'),
         headers: {'Content-Type': 'application/json'}, body: jsonEncode(data));
-    this.authenticating = false;
+    this.isLoading = false;
 
     if (resp.statusCode == 200) {
       final loginResponse = loginResponseFromJson(resp.body);
@@ -94,6 +94,7 @@ class AuthService with ChangeNotifier {
     }
   }
   Future savePicture(String imagePath) async {
+    isLoading = true;
     final request = await http.MultipartRequest('PUT',
         Uri.parse('${Environment.apiUrl}/uploads/${user.uid}'));
 
@@ -107,6 +108,7 @@ class AuthService with ChangeNotifier {
     // TODO: validate responsed.statusCode 200
     final responseData = json.decode(responsed.body);
     user.img = responseData['img'];
+    isLoading = false;
     return responseData;
   }
 
@@ -128,6 +130,7 @@ class AuthService with ChangeNotifier {
 
   Future signInWithGoogle() async {
     try {
+      isLoading = true;
       final account = await _googleSignIn.signIn();
       final googleKey = await account!.authentication;
 
@@ -146,14 +149,15 @@ class AuthService with ChangeNotifier {
       if (session.statusCode == 200) {
         final LoginResponse loginResponse = loginResponseFromJson(session.body);
         user = loginResponse.user;
-        await this._saveToken(loginResponse.token);
-
+        await _saveToken(loginResponse.token);
+        isLoading = false;
         return true;
       } else {
+        isLoading = false;
         return false;
       }
-
     } catch (e) {
+      isLoading = false;
       print('Error en GoogleSignIn');
       print(e);
       return false;

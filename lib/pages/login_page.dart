@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_app/helpers/show_alert.dart';
 import 'package:flutter_chat_app/services/socket_service.dart';
+import 'package:flutter_chat_app/widgets/loading_animation.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_chat_app/services/auth_service.dart';
@@ -11,11 +12,14 @@ import 'package:flutter_chat_app/widgets/labels.dart';
 import '../app_theme.dart';
 import '../widgets/logo.dart';
 
+var loadingFlag = false;
+
 class LoginPage extends StatelessWidget {
   const LoginPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final authService = Provider.of<AuthService>(context);
     return Scaffold(
         backgroundColor: AppTheme.primaryColor,
         // SingleChildScrollView best ui
@@ -24,21 +28,26 @@ class LoginPage extends StatelessWidget {
           child: Container(
             // Special height for not break the app
             height: MediaQuery.of(context).size.height * 0.9,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Logo(title: 'Messenger'),
-                _Form(),
-                Labels(
-                    routeNav: 'register',
-                    question: 'Don`t have an account?',
-                    action: 'Create one now!'),
-                Text(
-                  'Terms Of Use Agreement',
-                  style: TextStyle(fontWeight: FontWeight.w200),
-                )
-              ],
-            ),
+            child: Stack(children: [
+              Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: const <Widget>[
+                  Logo(title: 'Messenger'),
+                  _Form(),
+                  Labels(
+                      routeNav: 'register',
+                      question: 'Don`t have an account?',
+                      action: 'Create one now!'),
+                  Text(
+                    'Terms Of Use Agreement',
+                    style: TextStyle(fontWeight: FontWeight.w200),
+                  )
+                ],
+              ),
+              authService.isLoading
+                  ? const LoadingAnimation()
+                  : Container(),
+            ]),
           ),
         ));
   }
@@ -76,14 +85,15 @@ class _FormState extends State<_Form> {
               textController: passwordCtrl,
               isPassword: true),
           BtnBlue(
-            onPressed: authService.authenticating
+            onPressed: authService.isLoading
                 ? null
                 : () async {
                     // Hide the keyboard
                     FocusScope.of(context).unfocus();
-
+                    loadingFlag = true;
                     final loginOk = await authService.login(
                         emailCtrl.text.trim(), passwordCtrl.text.trim());
+                    loadingFlag = false;
                     if (loginOk) {
                       socketService.connect();
                       Navigator.pushReplacementNamed(context, 'drawer');
@@ -112,20 +122,23 @@ class _FormState extends State<_Form> {
                     Text('   Sign in with Google',
                         style: TextStyle(color: Colors.white, fontSize: 17)),
                   ]),
-              onPressed: () async => {
-                    await authService.signInWithGoogle().then((value) => {
-                          if (value)
-                            {
-                              socketService.connect(),
-                              Navigator.pushReplacementNamed(context, 'drawer')
-                            }
-                          else
-                            {
-                              showAlert(
-                                  context, 'Bad credentials', 'Check the data')
-                            }
-                        })
-                  })
+              onPressed: authService.isLoading
+                  ? null
+                  : () async => {
+                        await authService.signInWithGoogle().then((value) => {
+                              if (value)
+                                {
+                                  socketService.connect(),
+                                  Navigator.pushReplacementNamed(
+                                      context, 'drawer')
+                                }
+                              else
+                                {
+                                  showAlert(context, 'Bad credentials',
+                                      'Check the data')
+                                }
+                            })
+                      })
         ],
       ),
     );

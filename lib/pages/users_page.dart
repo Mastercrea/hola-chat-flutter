@@ -3,6 +3,7 @@ import 'package:flutter_chat_app/models/user.dart';
 import 'package:flutter_chat_app/services/auth_service.dart';
 import 'package:flutter_chat_app/services/socket_service.dart';
 import 'package:flutter_chat_app/services/chat_service.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../app_theme.dart';
@@ -64,14 +65,19 @@ class _UsersPageState extends State<UsersPage> {
         //   },
         // ),
         actions: <Widget>[
-          Container(
-              margin: EdgeInsets.only(
-                right: 10,
-              ),
-              // child: Icon(Icons.check_circle), color: Colors.blue[400],
-              child: (socketService.serverStatus == ServerStatus.Online)
-                  ? Icon(Icons.check_circle, color: Colors.blue[400])
-                  : Icon(Icons.offline_bolt, color: Colors.red))
+          GestureDetector(
+            onTap: (socketService.serverStatus == ServerStatus.Online)
+                ? () => shortToast('Connected to server')
+                : () => shortToast('Disconnected from server'),
+            child: Container(
+                margin: EdgeInsets.only(
+                  right: 10,
+                ),
+                // child: Icon(Icons.check_circle), color: Colors.blue[400],
+                child: (socketService.serverStatus == ServerStatus.Online)
+                    ? Icon(Icons.check_circle, color: Colors.blue[400])
+                    : Icon(Icons.offline_bolt, color: Colors.red)),
+          )
         ],
       ),
       body: SmartRefresher(
@@ -132,6 +138,15 @@ class _UsersPageState extends State<UsersPage> {
             });
       },
     );
+  }
+
+  shortToast(String text) {
+    Fluttertoast.showToast(
+        msg: text,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Color(0xff16DCF2),
+        timeInSecForIosWeb: 1);
   }
 
   // Widget userCircleAvatar (user) {
