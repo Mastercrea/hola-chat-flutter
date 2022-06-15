@@ -32,7 +32,7 @@ class RegisterPage extends StatelessWidget {
                 children: <Widget>[
                   Logo(title: 'Register'),
                   _Form(),
-                   Labels(routeNav: 'login',question: 'Has an account?', action: 'Log in'),
+                   Labels(routeNav: 'login',question: 'Already had an account?', action: 'Log in'),
                   Text(
                     'Terms Of Use Agreement',
                     style: TextStyle(fontWeight: FontWeight.w200),

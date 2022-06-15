@@ -39,7 +39,7 @@ class LoginPage extends StatelessWidget {
                       question: 'Don`t have an account?',
                       action: 'Create one now!'),
                   Text(
-                    'Terms Of Use Agreement',
+                    'Terms Of Use and Agreement',
                     style: TextStyle(fontWeight: FontWeight.w200),
                   )
                 ],

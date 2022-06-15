@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_chat_app/app_theme.dart';
 import 'package:flutter_chat_app/navigation_home_screen.dart';
 import 'package:flutter_chat_app/pages/login_page.dart';
-import 'package:flutter_chat_app/pages/users_page.dart';
 import 'package:flutter_chat_app/services/auth_service.dart';
 import 'package:flutter_chat_app/services/socket_service.dart';
 import 'package:provider/provider.dart';
+
+import '../widgets/loading_animation.dart';
 
 class LoadingPage extends StatefulWidget {
   const LoadingPage({Key? key}) : super(key: key);
@@ -25,12 +27,16 @@ class _LoadingPageState extends State<LoadingPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Scaffold(backgroundColor: AppTheme.primaryColor,
       body: FutureBuilder(
       future: _futureCheckLoginState,
         builder: (context, snapshot) {
-          return Center(
-            child: Text('Please Wait...'),
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text('Please Wait', style: TextStyle(color: Colors.white, fontSize: 20)),
+              LoadingAnimation(),
+            ]
           );
         },
       ),
