@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_chat_app/app_theme.dart';
 import 'package:flutter/material.dart';
@@ -141,7 +142,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
                                   ),
                                     authService.isLoading
                                         ? const LoadingAnimation()
-                                        : Container(),
+                                        : SizedBox.shrink(),
                                   ]
                                 ),
                               ),
@@ -231,11 +232,25 @@ class _HomeDrawerState extends State<HomeDrawer> {
     //   return Image.file(File(_croppedFile!.path), height: 160, width: 160);
     // }
     else {
-      return Text(
-        user.name.substring(0, 2),
-        style: const TextStyle(
-            fontWeight: FontWeight.bold, color: Colors.white, fontSize: 24),
-      );
+      if(!authService.isLoading) {
+        return Container(
+          color: Colors.transparent,
+          height: 100,
+          width: 100,
+          child: Align(
+            alignment: Alignment.center,
+            child: Text(
+              user.name.substring(0, 2),
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                  fontWeight: FontWeight.bold, color: Colors.white, fontSize: 24),
+            ),
+          ),
+        );
+      } else {
+        return Container();
+      }
+
     }
   }
 
