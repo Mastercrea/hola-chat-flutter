@@ -19,3 +19,19 @@ class LoadingAnimation extends StatelessWidget {
     );
   }
 }
+class LoadingPicture extends StatelessWidget {
+  const LoadingPicture({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Colors.transparent,
+      child: Center(
+        child: LoadingAnimationWidget.hexagonDots(
+          color: AppTheme.secondaryColor,
+          size: 50,
+        ),
+      ),
+    );
+  }
+}

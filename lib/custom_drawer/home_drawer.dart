@@ -141,7 +141,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
                                     child: showImage(user),
                                   ),
                                     authService.isLoading
-                                        ? const LoadingAnimation()
+                                        ? const LoadingPicture()
                                         : SizedBox.shrink(),
                                   ]
                                 ),
